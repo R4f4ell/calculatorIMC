@@ -7,11 +7,11 @@ Aplicação web responsiva desenvolvida com React para calcular o Índice de Mas
 - Vite
 - SCSS (modular e escalável)
 
-## ## 🚀 Funcionalidades
+## 🚀 Funcionalidades
 - Cálculo automático do IMC a partir do peso e altura informados
 - Exibição da categoria correspondente (ex: normal, sobrepeso, obesidade, etc.)
 - Interface responsiva adaptada para dispositivos móveis e desktops
 
-## ##🔗 Links
-- Projeto online: [Vercel]
-- Código-fonte: [GitHub]
+## 🔗 Links
+- Projeto online: https://calculator-imc-devr4f4ell.vercel.app/
+- Código-fonte: https://github.com/R4f4ell/calculatorIMC
