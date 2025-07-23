@@ -1,0 +1,334 @@
+#result-container {
+  max-width: 600px;
+  width: 90%;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 
+              0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15),
+                0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  #imc-number {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #1f2937;
+    letter-spacing: -0.025em;
+
+    span {
+      font-weight: 800;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  #imc-info {
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    color: #6b7280;
+    margin-bottom: 2.5rem;
+    font-weight: 500;
+
+    span {
+      font-weight: 600;
+    }
+  }
+
+  h3 {
+    margin: 2rem 0 1.5rem;
+    color: #374151;
+    font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+    font-weight: 600;
+    letter-spacing: 0.025em;
+  }
+
+  // Tabela responsiva e moderna
+  #imc-table {
+    max-width: 100%;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(229, 231, 235, 0.25);
+    margin: 1.5rem 0 2rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      padding: 0.9rem 0.75rem;
+      background: linear-gradient(135deg, #f9fafb, #f1f5f9);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+
+      h4 {
+        flex: 1;
+        font-size: clamp(0.85rem, 2vw, 1rem);
+        font-weight: 700;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin: 0;
+        text-align: center;
+
+        &:nth-child(3) {
+          max-width: 100px;
+          min-width: 90px;
+        }
+      }
+    }
+
+    .table-data {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      padding: 0.75rem 0.75rem;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.3);
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background: rgba(248, 250, 252, 0.6);
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      p {
+        flex: 1;
+        font-size: clamp(0.85rem, 2vw, 1rem);
+        color: #374151;
+        font-weight: 500;
+        margin: 0;
+        text-align: center;
+
+        &:nth-child(3) {
+          max-width: 100px;
+          min-width: 90px;
+        }
+      }
+    }
+
+    // Responsividade
+    @media (max-width: 540px) {
+      .table-header {
+        display: none;
+      }
+
+      .table-data {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        padding: 0.9rem 1rem;
+
+        p {
+          width: 100%;
+          font-size: 0.85rem;
+          margin-bottom: 0.5rem;
+          text-align: left;
+          position: relative;
+          padding-left: 110px;
+
+          &:nth-child(1)::before {
+            content: 'Classificação:';
+          }
+
+          &:nth-child(2)::before {
+            content: 'IMC:';
+          }
+
+          &:nth-child(3)::before {
+            content: 'Obesidade:';
+          }
+
+          &::before {
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-weight: 600;
+            color: #6b7280;
+          }
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+
+  // Botão
+  #back-btn, button {
+    align-self: center;
+    padding: 0.875rem 2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background: rgba(107, 114, 128, 0.1);
+    color: #4b5563;
+    border: 2px solid rgba(107, 114, 128, 0.2);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 120px;
+
+    &:hover {
+      background: rgba(107, 114, 128, 0.15);
+      border-color: rgba(107, 114, 128, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(107, 114, 128, 0.2);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 8px rgba(107, 114, 128, 0.2);
+    }
+  }
+
+  // Cores status
+  .good {
+    color: #059669;
+    text-shadow: 0 1px 2px rgba(5, 150, 105, 0.1);
+  }
+
+  .low {
+    color: #d97706;
+    text-shadow: 0 1px 2px rgba(217, 119, 6, 0.1);
+  }
+
+  .medium {
+    color: #dc2626;
+    text-shadow: 0 1px 2px rgba(220, 38, 38, 0.1);
+  }
+
+  .high {
+    color: #b91c1c;
+    text-shadow: 0 1px 2px rgba(185, 28, 28, 0.1);
+  }
+
+  // Ajustes por largura
+  @media (min-width: 1024px) {
+    max-width: 700px;
+    padding: 3rem;
+  }
+
+  @media (max-width: 768px) {
+    width: 95%;
+    margin: 1.5rem auto;
+    padding: 2rem;
+  }
+
+  @media (max-width: 640px) {
+    width: 95%;
+    margin: 1rem auto;
+    padding: 1.5rem;
+    border-radius: 20px;
+
+    #imc-number {
+      margin-bottom: 0.5rem;
+    }
+
+    #imc-info {
+      margin-bottom: 1.5rem;
+    }
+
+    h3 {
+      margin: 1.25rem 0 1rem;
+      font-size: 1rem;
+    }
+
+    #back-btn, button {
+      padding: 0.75rem 1.5rem;
+      font-size: 0.875rem;
+      min-width: 100px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    width: 95%;
+    padding: 1.25rem;
+    margin: 0.5rem auto;
+  }
+
+  // Modo escuro
+  @media (prefers-color-scheme: dark) {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+    border-color: rgba(255, 255, 255, 0.15);
+
+    #imc-number {
+      color: #f9fafb;
+    }
+
+    #imc-info {
+      color: #d1d5db;
+    }
+
+    h3 {
+      color: #e5e7eb;
+    }
+
+    #imc-table {
+      background: rgba(31, 41, 55, 0.4);
+      border-color: rgba(75, 85, 99, 0.3);
+
+      .table-header {
+        background: linear-gradient(135deg, rgba(55, 65, 81, 0.8), rgba(75, 85, 99, 0.6));
+        border-bottom-color: rgba(107, 114, 128, 0.4);
+
+        h4 {
+          color: #d1d5db;
+        }
+      }
+
+      .table-data {
+        border-bottom-color: rgba(75, 85, 99, 0.3);
+
+        &:hover {
+          background: rgba(55, 65, 81, 0.3);
+        }
+
+        p {
+          color: #e5e7eb;
+
+          &::before {
+            color: #9ca3af;
+          }
+        }
+      }
+    }
+
+    #back-btn, button {
+      background: rgba(107, 114, 128, 0.15);
+      color: #d1d5db;
+      border-color: rgba(107, 114, 128, 0.3);
+
+      &:hover {
+        background: rgba(107, 114, 128, 0.25);
+        border-color: rgba(107, 114, 128, 0.4);
+      }
+    }
+
+    .good {
+      color: #34d399;
+    }
+
+    .low {
+      color: #fbbf24;
+    }
+
+    .medium {
+      color: #f87171;
+    }
+
+    .high {
+      color: #ef4444;
+    }
+  }
+}
