@@ -1,11 +1,11 @@
 import './button.scss'
 
-const Button = ({id, text, action}) => {
-  const handleAction = (e) => {
-    action(e)
-  }
-
-  return <button id={id} onClick={handleAction}>{text}</button>
+const Button = ({ id, text, action }) => {
+  return (
+    <button id={id} onClick={action}>
+      {text}
+    </button>
+  )
 }
 
 export default Button
