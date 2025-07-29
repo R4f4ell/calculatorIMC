@@ -17,8 +17,6 @@ Permite que o usuário insira sua altura e peso para calcular o IMC, com resulta
 - Exibição da classificação do IMC (ex: Magreza, Normal, Sobrepeso...)
 - Design responsivo e adaptado a diferentes dispositivos
 - Acessibilidade com uso de `aria-label`, `aria-labelledby`, `label` semântico
-- Validação de entrada com filtro de caracteres
-- Otimizado para performance (build leve e rápido)
 
 ## 🔗 Links
 - Projeto online: https://calculator-imc-olive.vercel.app
