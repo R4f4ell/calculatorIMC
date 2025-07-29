@@ -38,19 +38,21 @@ function App() {
   }
 
   return (
-    <div className="container">
-      {!imc ? (
-        <ImcCalc calcImc={calcImc} />
-      ) : (
-        <ImcTable
-          data={data}
-          imc={imc}
-          info={info}
-          infoClass={infoClass}
-          resetCalc={resetCalc}
-        />
-      )}
-    </div>
+    <main role="main">
+      <section className="container" aria-label="Calculadora de IMC">
+        {!imc ? (
+          <ImcCalc calcImc={calcImc} />
+        ) : (
+          <ImcTable
+            data={data}
+            imc={imc}
+            info={info}
+            infoClass={infoClass}
+            resetCalc={resetCalc}
+          />
+        )}
+      </section>
+    </main>
   )
 }
 

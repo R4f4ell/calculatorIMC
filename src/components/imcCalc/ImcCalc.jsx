@@ -20,8 +20,8 @@ const ImcCalc = ({ calcImc }) => {
   }
 
   return (
-    <div id="calc-container">
-      <h2>Calculadora de IMC</h2>
+    <section id="calc-container" aria-labelledby="calc-title">
+      <h2 id="calc-title">Calculadora de IMC</h2>
       <form id="imc-form">
         <div className="form-inputs">
           <div className="form-control">
@@ -31,6 +31,8 @@ const ImcCalc = ({ calcImc }) => {
               name="height"
               id="height"
               placeholder="Exemplo: 1,75"
+              inputMode='decimal'
+              aria-label='Altura'
               onChange={(e) => handleInputChange(e, setHeight)}
               value={height}
             />
@@ -43,6 +45,8 @@ const ImcCalc = ({ calcImc }) => {
               name="weight"
               id="weight"
               placeholder="Exemplo: 70.5"
+              inputMode="decimal"
+              aria-label="Peso"
               onChange={(e) => handleInputChange(e, setWeight)}
               value={weight}
             />
@@ -54,7 +58,7 @@ const ImcCalc = ({ calcImc }) => {
           <Button id="clear-btn" text="Limpar" action={clearForm} />
         </div>
       </form>
-    </div>
+    </section>
   )
 }
 
