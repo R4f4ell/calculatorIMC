@@ -19,5 +19,5 @@ Permite que o usuário insira sua altura e peso para calcular o IMC, com resulta
 - Acessibilidade com uso de `aria-label`, `aria-labelledby`, `label` semântico
 
 ## 🔗 Links
-- Projeto online: https://calculator-imc-olive.vercel.app
+- Projeto online: https://calculatorimc.rafaelldev.com
 - Código-fonte: https://github.com/R4f4ell/calculatorIMC
