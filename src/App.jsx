@@ -1,59 +1,79 @@
-import { useState } from 'react'
-import { data } from './data/data'
+import React, { useState, useCallback, lazy, Suspense } from "react";
+import { data } from "./data/data";
+
+// Toast de erro
+import { Toaster } from "react-hot-toast";
 
 // Componentes
-import ImcCalc from './components/imcCalc/ImcCalc'
-import ImcTable from './components/imcTable/ImcTable'
+// Chama lazy import (melhora carregamento)
+const ImcCalc = lazy(() => import("./components/imcCalc/ImcCalc"));
+const ImcTable = lazy(() => import("./components/imcTable/ImcTable"));
+
+// Utils
+import { normalizeNumber, normalizeHeight } from "./utils/normalizeNumber";
+import { calculateImc, classifyImc } from "./utils/imcMath";
 
 function App() {
-  const [imc, setImc] = useState("")
-  const [info, setInfo] = useState("")
-  const [infoClass, setInfoClass] = useState("")
+  const [imc, setImc] = useState(""); // Guarda o IMC calculado
+  const [info, setInfo] = useState(""); // Guarda o texto da situação
+  const [infoClass, setInfoClass] = useState(""); // Guarda a classe visual
 
-  const calcImc = (e, height, weight) => {
-    e.preventDefault()
+  // Chama o cálculo do IMC
+  const calcImc = useCallback((e, heightText, weightText) => {
+    e.preventDefault();
 
-    if (!weight || !height) return
+    // Normaliza peso (aceita vírgula ou ponto)
+    const weight = normalizeNumber(weightText);
+    // Normaliza altura com suporte a "175" -> 1.75
+    const height = normalizeHeight(heightText);
 
-    const weightFloat = parseFloat(weight.replace(",", "."))
-    const heightFloat = parseFloat(height.replace(",", "."))
+    // Sai cedo se inválido
+    if (!Number.isFinite(weight) || !Number.isFinite(height) || height <= 0) return;
 
-    if (isNaN(weightFloat) || isNaN(heightFloat)) return
+    // Calcula o IMC com 1 casa
+    const imcResult = calculateImc(weight, height);
+    if (imcResult == null) return;
 
-    const imcResult = (weightFloat / (heightFloat * heightFloat)).toFixed(1)
-    setImc(imcResult)
+    setImc(imcResult);
 
-    const found = data.find((item) => imcResult >= item.min && imcResult <= item.max)
-    if (found) {
-      setInfo(found.info)
-      setInfoClass(found.infoClass)
+    // Classifica com base nos dados existentes
+    const result = classifyImc(imcResult, data);
+    if (result) {
+      setInfo(result.info);
+      setInfoClass(result.infoClass);
     }
-  }
+  }, []);
 
-  const resetCalc = (e) => {
-    e.preventDefault()
-    setImc("")
-    setInfo("")
-    setInfoClass("")
-  }
+  // Chama o reset para voltar ao formulário
+  const resetCalc = useCallback((e) => {
+    e.preventDefault();
+    setImc("");
+    setInfo("");
+    setInfoClass("");
+  }, []);
 
   return (
     <main role="main">
+      <Toaster position="top-right" reverseOrder={false} />
+
       <section className="container" aria-label="Calculadora de IMC">
-        {!imc ? (
-          <ImcCalc calcImc={calcImc} />
-        ) : (
-          <ImcTable
-            data={data}
-            imc={imc}
-            info={info}
-            infoClass={infoClass}
-            resetCalc={resetCalc}
-          />
-        )}
+        {/* Chama o Suspense para suportar lazy import sem alterar a UX */}
+        <Suspense fallback={null}>
+          {!imc ? (
+            <ImcCalc calcImc={calcImc} />
+          ) : (
+            <ImcTable
+              data={data}
+              imc={imc}
+              info={info}
+              infoClass={infoClass}
+              resetCalc={resetCalc}
+            />
+          )}
+        </Suspense>
       </section>
     </main>
-  )
+  );
 }
 
-export default App
+export default App;

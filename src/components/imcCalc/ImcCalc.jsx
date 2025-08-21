@@ -1,29 +1,62 @@
-import { useState } from 'react'
-import './imcCalc.scss'
-import Button from '../button/Button'
+import React, { useCallback, memo, useRef } from "react";
+import { toast } from "react-hot-toast";
+import "./imcCalc.scss";
+import Button from "../button/Button";
+import useImcForm from "../../hooks/useImcForm";
 
 const ImcCalc = ({ calcImc }) => {
-  const [height, setHeight] = useState("")
-  const [weight, setWeight] = useState("")
+  // Chama o hook para controlar altura e peso
+  const {
+    height,
+    weight,
+    handleHeightChange,
+    handleWeightChange,
+    clearForm,
+  } = useImcForm();
 
-  const clearForm = (e) => {
-    e.preventDefault()
-    setHeight("")
-    setWeight("")
-  }
+  // Container principal: refs do form e dos campos (para foco/validação)
+  const formRef = useRef(null);
+  const heightRef = useRef(null);
+  const weightRef = useRef(null);
 
-  const validDigits = (text) => text.replace(/[^0-9,]/g, "")
+  // Cria handler estável para calcular (evita recriar função inline a cada render)
+  const handleCalc = useCallback(
+    (e) => {
+      // Aqui valida presença dos dois campos antes de chamar calcImc
+      const missingHeight = !height || !height.trim();
+      const missingWeight = !weight || !weight.trim();
 
-  const handleInputChange = (e, setter) => {
-    const value = validDigits(e.target.value)
-    setter(value)
-  }
+      if (missingHeight || missingWeight) {
+        // Chama o reportValidity do form para mostrar as mensagens nativas
+        formRef.current?.reportValidity?.();
 
+        // Aqui foca no primeiro campo inválido
+        if (missingHeight && heightRef.current) heightRef.current.focus();
+        else if (missingWeight && weightRef.current) weightRef.current.focus();
+
+        // Aqui dispara o toast global (fora do container)
+        toast.error("Preencha altura e peso para calcular o IMC.");
+
+        // Aqui interrompe o fluxo padrão sem calcular
+        e.preventDefault();
+        return;
+      }
+
+      // Aqui segue o fluxo padrão do app
+      calcImc(e, height, weight);
+    },
+    [calcImc, height, weight]
+  );
+
+  // Aqui retorna o markup do formulário
   return (
     <section id="calc-container" aria-labelledby="calc-title">
       <h2 id="calc-title">Calculadora de IMC</h2>
-      <form id="imc-form">
+
+      {/* Chama o form básico */}
+      <form id="imc-form" ref={formRef}>
         <div className="form-inputs">
+          {/* Controla a altura */}
           <div className="form-control">
             <label htmlFor="height">Altura:</label>
             <input
@@ -31,13 +64,16 @@ const ImcCalc = ({ calcImc }) => {
               name="height"
               id="height"
               placeholder="Exemplo: 1,75"
-              inputMode='decimal'
-              aria-label='Altura'
-              onChange={(e) => handleInputChange(e, setHeight)}
+              inputMode="decimal"
+              aria-label="Altura"
+              ref={heightRef}
+              required
+              onChange={handleHeightChange}
               value={height}
             />
           </div>
 
+          {/* Controla o peso */}
           <div className="form-control">
             <label htmlFor="weight">Peso:</label>
             <input
@@ -47,19 +83,22 @@ const ImcCalc = ({ calcImc }) => {
               placeholder="Exemplo: 70.5"
               inputMode="decimal"
               aria-label="Peso"
-              onChange={(e) => handleInputChange(e, setWeight)}
+              ref={weightRef}
+              required
+              onChange={handleWeightChange}
               value={weight}
             />
           </div>
         </div>
 
+        {/* Ações */}
         <div className="action-control">
-          <Button id="calc-btn" text="Calcular" action={(e) => calcImc(e, height, weight)} />
+          <Button id="calc-btn" text="Calcular" action={handleCalc} />
           <Button id="clear-btn" text="Limpar" action={clearForm} />
         </div>
       </form>
     </section>
-  )
-}
+  );
+};
 
-export default ImcCalc
+export default memo(ImcCalc);

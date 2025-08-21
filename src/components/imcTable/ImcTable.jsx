@@ -1,5 +1,6 @@
-import './imcTable.scss'
-import Button from '../button/Button'
+import React, { memo } from "react";
+import "./imcTable.scss";
+import Button from "../button/Button";
 
 const ImcTable = ({ data, imc, info, infoClass, resetCalc }) => {
   return (
@@ -16,6 +17,7 @@ const ImcTable = ({ data, imc, info, infoClass, resetCalc }) => {
 
       <h3>Classificações:</h3>
 
+      {/* Chama a grade que simula tabela */}
       <div id="imc-table" role="table" aria-label="Tabela de classificação de IMC">
         <div className="table-header" role="row">
           <h4 role="columnheader">IMC</h4>
@@ -23,8 +25,9 @@ const ImcTable = ({ data, imc, info, infoClass, resetCalc }) => {
           <h4 role="columnheader">Obesidade</h4>
         </div>
 
-        {data.map(({ classification, info, obesity }, index) => (
-          <div className="table-data" role="row" key={`${classification}-${index}`}>
+        {data.map(({ classification, info, obesity }) => (
+          // Usa key estável baseada no valor único 'classification'
+          <div className="table-data" role="row" key={classification}>
             <p role="cell">{classification}</p>
             <p role="cell">{info}</p>
             <p role="cell">{obesity}</p>
@@ -34,7 +37,7 @@ const ImcTable = ({ data, imc, info, infoClass, resetCalc }) => {
 
       <Button id="back-btn" text="voltar" action={resetCalc} />
     </section>
-  )
-}
+  );
+};
 
-export default ImcTable
+export default memo(ImcTable);

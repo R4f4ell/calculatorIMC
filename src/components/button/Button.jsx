@@ -1,5 +1,7 @@
-import './button.scss'
+import { memo } from "react";
+import "./button.scss";
 
+// Botão básico
 const Button = ({ id, text, action }) => {
   return (
     <button
@@ -10,7 +12,8 @@ const Button = ({ id, text, action }) => {
     >
       {text}
     </button>
-  )
-}
+  );
+};
 
-export default Button
+// Aqui usa o memo para evitar render desnecessário
+export default memo(Button);
