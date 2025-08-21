@@ -1,63 +1,66 @@
-// Estilos para os botões 
-    button, .btn {
-      flex: 1;
-      padding: 1rem 1.5rem;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: 16px;
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
 
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-        transition: left 0.5s;
-      }
+button, .btn {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 
-      &:hover::before {
-        left: 100%;
-      }
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+  }
 
-      &#calc-btn {
-        background: linear-gradient(135deg, #6366f1, #8b5cf6);
-        color: white;
-        box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+  &:hover::before { left: 100%; }
+  &:focus-visible { @include m.focus-outline(); }
 
-        &:hover {
-          background: linear-gradient(135deg, #5b5bd6, #7c3aed);
-          transform: translateY(-2px);
-          box-shadow: 0 12px 24px rgba(99, 102, 241, 0.4);
-        }
+  /* Botão Calcular */
+  &#calc-btn {
+    background: linear-gradient(135deg, v.$primary-500, v.$purple-500);
+    color: white;
+    box-shadow: 0 8px 16px rgba(v.$primary-500, 0.3);
 
-        &:active {
-          transform: translateY(0);
-          box-shadow: 0 6px 12px rgba(99, 102, 241, 0.3);
-        }
-      }
-
-      &#clear-btn {
-        background: rgba(239, 68, 68, 0.1);
-        color: #dc2626;
-        border: 2px solid rgba(239, 68, 68, 0.2);
-
-        &:hover {
-          background: rgba(239, 68, 68, 0.15);
-          border-color: rgba(239, 68, 68, 0.3);
-          transform: translateY(-2px);
-          box-shadow: 0 8px 16px rgba(239, 68, 68, 0.2);
-        }
-
-        &:active {
-          transform: translateY(0);
-          box-shadow: 0 4px 8px rgba(239, 68, 68, 0.2);
-        }
-      }
+    &:hover {
+      background: linear-gradient(135deg, v.$primary-600, v.$purple-600);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(v.$primary-500, 0.4);
     }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 6px 12px rgba(v.$primary-500, 0.3);
+    }
+  }
+
+  /* Botão Limpar */
+  &#clear-btn {
+    background: rgba(v.$red-500, 0.10);
+    color: v.$danger-600;
+    border: 2px solid rgba(v.$red-500, 0.20);
+
+    &:hover {
+      background: rgba(v.$red-500, 0.15);
+      border-color: rgba(v.$red-500, 0.30);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(v.$red-500, 0.20);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 8px rgba(v.$red-500, 0.20);
+    }
+  }
+}

@@ -39,13 +39,10 @@ const ImcTable = ({ data, imc, info, infoClass, resetCalc }) => {
         </output>
       </p>
 
-      <h3 id="table-title">Classificações:</h3>
-
       {/* Chama a grade que simula tabela */}
       <div
         id="imc-table"
         role="table"
-        aria-labelledby="table-title"
         aria-describedby="table-hint"
       >
         <div className="table-header" role="row">
@@ -55,7 +52,6 @@ const ImcTable = ({ data, imc, info, infoClass, resetCalc }) => {
         </div>
 
         {data.map(({ classification, info, obesity }) => (
-          // Usa key estável baseada no valor único 'classification'
           <div className="table-data" role="row" key={classification}>
             <p role="cell">{classification}</p>
             <p role="cell">{info}</p>

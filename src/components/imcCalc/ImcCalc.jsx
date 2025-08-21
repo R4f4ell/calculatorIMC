@@ -1,11 +1,10 @@
 import React, { useCallback, memo, useRef } from "react";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import "./imcCalc.scss";
 import Button from "../button/Button";
 import useImcForm from "../../hooks/useImcForm";
 
 const ImcCalc = ({ calcImc }) => {
-  // Chama o hook para controlar altura e peso
   const {
     height,
     weight,
@@ -14,59 +13,81 @@ const ImcCalc = ({ calcImc }) => {
     clearForm,
   } = useImcForm();
 
-  // Container principal: refs do form e dos campos (para foco/validação)
   const formRef = useRef(null);
   const heightRef = useRef(null);
   const weightRef = useRef(null);
 
-  // Cria handler estável para calcular (evita recriar função inline a cada render)
+  const lastToastIdRef = useRef(null);
+
+  const dismissIfBothFilled = useCallback(
+    (h, w) => {
+      const hasBoth = h && h.trim() && w && w.trim();
+      if (hasBoth && lastToastIdRef.current) {
+        toast.dismiss(lastToastIdRef.current);
+        lastToastIdRef.current = null;
+      }
+    },
+    []
+  );
+
+  const onHeightChange = useCallback(
+    (e) => {
+      handleHeightChange(e);
+      dismissIfBothFilled(e.target.value, weight);
+    },
+    [handleHeightChange, weight, dismissIfBothFilled]
+  );
+
+  const onWeightChange = useCallback(
+    (e) => {
+      handleWeightChange(e);
+      dismissIfBothFilled(height, e.target.value);
+    },
+    [handleHeightChange, height, dismissIfBothFilled]
+  );
+
   const handleCalc = useCallback(
     (e) => {
-      // Aqui valida presença dos dois campos antes de chamar calcImc
+      e.preventDefault();
+
       const missingHeight = !height || !height.trim();
       const missingWeight = !weight || !weight.trim();
 
       if (missingHeight || missingWeight) {
-        // Chama o reportValidity do form para mostrar as mensagens nativas
-        formRef.current?.reportValidity?.();
-
-        // Aqui foca no primeiro campo inválido
         if (missingHeight && heightRef.current) heightRef.current.focus();
         else if (missingWeight && weightRef.current) weightRef.current.focus();
 
-        // Aqui dispara o toast global (fora do container)
-        toast.error("Preencha altura e peso para calcular o IMC.");
-
-        // Aqui interrompe o fluxo padrão sem calcular
-        e.preventDefault();
+        const id = toast.error("Preencha os campos", {
+          duration: 3500,
+          className: "imc-toast",
+        });
+        lastToastIdRef.current = id;
         return;
       }
 
-      // Aqui segue o fluxo padrão do app
+      if (lastToastIdRef.current) {
+        toast.dismiss(lastToastIdRef.current);
+        lastToastIdRef.current = null;
+      }
+
       calcImc(e, height, weight);
     },
     [calcImc, height, weight]
   );
 
-  // Aqui retorna o markup do formulário
-    // Aqui retorna o markup do formulário
   return (
     <div id="calc-container" aria-labelledby="calc-title">
       <h2 id="calc-title">Calculadora de IMC</h2>
 
-      {/* Chama o form básico */}
       <form
         id="imc-form"
         ref={formRef}
         role="form"
         aria-describedby="form-hint"
         onSubmit={handleCalc}
+        noValidate
       >
-        {/* Mensagem de ajuda (visível para leitores de tela) */}
-        <p
-          id="form-hint"
-          style={{ position: "absolute", left: "-9999px" }}
-        >
+        <p id="form-hint" style={{ position: "absolute", left: "-9999px" }}>
           Informe altura em metros, por exemplo 1,75, e peso em quilogramas, por
           exemplo 70,5.
         </p>
@@ -84,7 +105,6 @@ const ImcCalc = ({ calcImc }) => {
             Dados necessários para calcular o IMC
           </span>
 
-          {/* Controla a altura */}
           <div className="form-control">
             <label htmlFor="height">Altura:</label>
             <input
@@ -96,8 +116,7 @@ const ImcCalc = ({ calcImc }) => {
               aria-label="Altura"
               aria-describedby="height-hint form-hint"
               ref={heightRef}
-              required
-              onChange={handleHeightChange}
+              onChange={onHeightChange}
               value={height}
               autoComplete="off"
               enterKeyHint="done"
@@ -110,20 +129,18 @@ const ImcCalc = ({ calcImc }) => {
             </span>
           </div>
 
-          {/* Controla o peso */}
           <div className="form-control">
             <label htmlFor="weight">Peso:</label>
             <input
               type="text"
               name="weight"
               id="weight"
-              placeholder="Exemplo: 70.5"
+              placeholder="Exemplo: 70,5"
               inputMode="decimal"
               aria-label="Peso"
               aria-describedby="weight-hint form-hint"
               ref={weightRef}
-              required
-              onChange={handleWeightChange}
+              onChange={onWeightChange}
               value={weight}
               autoComplete="off"
               enterKeyHint="done"
@@ -137,7 +154,6 @@ const ImcCalc = ({ calcImc }) => {
           </div>
         </div>
 
-        {/* Ações */}
         <div className="action-control">
           <Button id="calc-btn" text="Calcular" action={handleCalc} />
           <Button id="clear-btn" text="Limpar" action={clearForm} />

@@ -1,11 +1,16 @@
-@use './variables';
+@use './variables' as v;
 
 body{
-    background-color: variables.$bg-body;
-    color: variables.$color-body;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    font-family: "lato", sans-serif;
+  background-color: v.$bg-body;
+  color: v.$color-body;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; 
+  font-family: "lato", sans-serif;
+}
+
+/* Foco visível global mínimo (não altera layout) */
+a, button, input, select, textarea {
+  &:focus-visible { outline: 2px solid rgba(v.$primary-500, .6); outline-offset: 2px; }
 }

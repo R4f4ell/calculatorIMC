@@ -1,11 +1,10 @@
 import React, { useState, useCallback, lazy, Suspense } from "react";
 import { data } from "./data/data";
 
-// Toast de erro
-import { Toaster } from "react-hot-toast";
+// Toast (Sonner)
+import { Toaster } from "sonner";
 
 // Componentes
-// Chama lazy import (melhora carregamento)
 const ImcCalc = lazy(() => import("./components/imcCalc/ImcCalc"));
 const ImcTable = lazy(() => import("./components/imcTable/ImcTable"));
 
@@ -14,29 +13,23 @@ import { normalizeNumber, normalizeHeight } from "./utils/normalizeNumber";
 import { calculateImc, classifyImc } from "./utils/imcMath";
 
 function App() {
-  const [imc, setImc] = useState(""); // Guarda o IMC calculado
-  const [info, setInfo] = useState(""); // Guarda o texto da situação
-  const [infoClass, setInfoClass] = useState(""); // Guarda a classe visual
+  const [imc, setImc] = useState("");
+  const [info, setInfo] = useState("");
+  const [infoClass, setInfoClass] = useState("");
 
-  // Chama o cálculo do IMC
   const calcImc = useCallback((e, heightText, weightText) => {
     e.preventDefault();
 
-    // Normaliza peso (aceita vírgula ou ponto)
     const weight = normalizeNumber(weightText);
-    // Normaliza altura com suporte a "175" -> 1.75
     const height = normalizeHeight(heightText);
 
-    // Sai cedo se inválido
     if (!Number.isFinite(weight) || !Number.isFinite(height) || height <= 0) return;
 
-    // Calcula o IMC com 1 casa
     const imcResult = calculateImc(weight, height);
     if (imcResult == null) return;
 
     setImc(imcResult);
 
-    // Classifica com base nos dados existentes
     const result = classifyImc(imcResult, data);
     if (result) {
       setInfo(result.info);
@@ -44,7 +37,6 @@ function App() {
     }
   }, []);
 
-  // Chama o reset para voltar ao formulário
   const resetCalc = useCallback((e) => {
     e.preventDefault();
     setImc("");
@@ -70,13 +62,16 @@ function App() {
       </a>
 
       <main id="conteudo-principal" tabIndex={-1} aria-label="Conteúdo principal">
-        {/* Área viva para leitores de tela anunciarem os toasts */}
         <div role="status" aria-live="polite" aria-atomic="true">
-          <Toaster position="top-right" reverseOrder={false} />
+          <Toaster
+            position="top-right"
+            richColors
+            closeButton={false}
+            className="imc-toaster"
+          />
         </div>
 
         <section className="container" aria-label="Calculadora de IMC">
-          {/* Suspense com fallback acessível */}
           <Suspense
             fallback={
               <div role="status" aria-live="polite" aria-atomic="true">
