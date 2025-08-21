@@ -10,7 +10,6 @@ body{
   font-family: "lato", sans-serif;
 }
 
-/* Foco visível global mínimo (não altera layout) */
 a, button, input, select, textarea {
   &:focus-visible { outline: 2px solid rgba(v.$primary-500, .6); outline-offset: 2px; }
 }

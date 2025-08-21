@@ -1,5 +1,3 @@
-// Funções para IMC
-
 // Chama o cálculo do IMC
 export function calculateImc(weight, height) {
   // Aqui valida entradas numéricas e evita divisão por zero

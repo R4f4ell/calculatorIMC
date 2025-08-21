@@ -1,6 +1,6 @@
 @use './variables' as v;
 
-/* Texto com gradiente (ex: títulos) */
+// Texto com gradiente
 @mixin gradient-text($from, $to) {
   background: linear-gradient(135deg, $from, $to);
   -webkit-background-clip: text;
@@ -8,19 +8,19 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* Cartão “glass” com o mesmo visual já usado */
+// Cartão “glass” 
 @mixin glass-card($from, $to, $bg-alpha: 0.1, $border-alpha: 0.1, $blur: 10px) {
   background: linear-gradient(135deg, rgba($from, $bg-alpha) 0%, rgba($to, $bg-alpha) 100%);
   border: 1px solid rgba(#fff, $border-alpha);
   backdrop-filter: blur($blur);
 }
 
-/* Anel de foco consistente (acessibilidade) */
+// Anel de foco consistente
 @mixin focus-ring($color: v.$primary-500, $size: 4px, $alpha: .10) {
   box-shadow: 0 0 0 $size rgba($color, $alpha);
 }
 
-/* Outline simples para elementos clicáveis */
+// Outline simples para elementos clicáveis
 @mixin focus-outline($color: v.$primary-500) {
   outline: 2px solid rgba($color, .6);
   outline-offset: 2px;
