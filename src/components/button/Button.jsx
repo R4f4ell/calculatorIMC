@@ -8,7 +8,20 @@ const Button = ({ id, text, action }) => {
       id={id}
       onClick={action}
       type="button"
-      aria-label={text}
+      aria-controls={
+        id === "calc-btn" || id === "clear-btn"
+          ? "imc-form"
+          : id === "back-btn"
+          ? "result-container"
+          : undefined
+      }
+      aria-describedby={
+        id === "calc-btn" || id === "clear-btn"
+          ? "form-hint"
+          : id === "back-btn"
+          ? "table-hint"
+          : undefined
+      }
     >
       {text}
     </button>

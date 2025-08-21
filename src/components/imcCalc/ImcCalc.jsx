@@ -49,13 +49,41 @@ const ImcCalc = ({ calcImc }) => {
   );
 
   // Aqui retorna o markup do formulário
+    // Aqui retorna o markup do formulário
   return (
-    <section id="calc-container" aria-labelledby="calc-title">
+    <div id="calc-container" aria-labelledby="calc-title">
       <h2 id="calc-title">Calculadora de IMC</h2>
 
       {/* Chama o form básico */}
-      <form id="imc-form" ref={formRef}>
-        <div className="form-inputs">
+      <form
+        id="imc-form"
+        ref={formRef}
+        role="form"
+        aria-describedby="form-hint"
+        onSubmit={handleCalc}
+      >
+        {/* Mensagem de ajuda (visível para leitores de tela) */}
+        <p
+          id="form-hint"
+          style={{ position: "absolute", left: "-9999px" }}
+        >
+          Informe altura em metros, por exemplo 1,75, e peso em quilogramas, por
+          exemplo 70,5.
+        </p>
+
+        <div
+          className="form-inputs"
+          role="group"
+          aria-labelledby="inputs-legend"
+          aria-describedby="form-hint"
+        >
+          <span
+            id="inputs-legend"
+            style={{ position: "absolute", left: "-9999px" }}
+          >
+            Dados necessários para calcular o IMC
+          </span>
+
           {/* Controla a altura */}
           <div className="form-control">
             <label htmlFor="height">Altura:</label>
@@ -66,11 +94,20 @@ const ImcCalc = ({ calcImc }) => {
               placeholder="Exemplo: 1,75"
               inputMode="decimal"
               aria-label="Altura"
+              aria-describedby="height-hint form-hint"
               ref={heightRef}
               required
               onChange={handleHeightChange}
               value={height}
+              autoComplete="off"
+              enterKeyHint="done"
             />
+            <span
+              id="height-hint"
+              style={{ position: "absolute", left: "-9999px" }}
+            >
+              Altura em metros. Aceita vírgula ou ponto.
+            </span>
           </div>
 
           {/* Controla o peso */}
@@ -83,11 +120,20 @@ const ImcCalc = ({ calcImc }) => {
               placeholder="Exemplo: 70.5"
               inputMode="decimal"
               aria-label="Peso"
+              aria-describedby="weight-hint form-hint"
               ref={weightRef}
               required
               onChange={handleWeightChange}
               value={weight}
+              autoComplete="off"
+              enterKeyHint="done"
             />
+            <span
+              id="weight-hint"
+              style={{ position: "absolute", left: "-9999px" }}
+            >
+              Peso em quilogramas. Aceita vírgula ou ponto.
+            </span>
           </div>
         </div>
 
@@ -97,7 +143,7 @@ const ImcCalc = ({ calcImc }) => {
           <Button id="clear-btn" text="Limpar" action={clearForm} />
         </div>
       </form>
-    </section>
+    </div>
   );
 };
 

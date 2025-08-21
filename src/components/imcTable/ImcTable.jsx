@@ -4,25 +4,54 @@ import Button from "../button/Button";
 
 const ImcTable = ({ data, imc, info, infoClass, resetCalc }) => {
   return (
-    <section id="result-container" aria-labelledby="result-title">
+    <div id="result-container" aria-labelledby="result-title">
       <h2 id="result-title">Resultado do IMC</h2>
 
-      <p id="imc-number">
-        Seu IMC: <span className={infoClass}>{imc}</span>
+      {/* Dica lida por leitor de tela sobre os resultados */}
+      <p id="imc-result-hint" style={{ position: "absolute", left: "-9999px" }}>
+        O valor do IMC e a situação abaixo são calculados automaticamente a
+        partir dos dados informados.
       </p>
 
-      <p id="imc-info">
-        Situação atual: <span className={infoClass}>{info}</span>
+      <p id="imc-number" aria-describedby="imc-result-hint">
+        Seu IMC:{" "}
+        <output
+          id="imc-value"
+          className={infoClass}
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {imc}
+        </output>
       </p>
 
-      <h3>Classificações:</h3>
+      <p id="imc-info" aria-describedby="imc-result-hint">
+        Situação atual:{" "}
+        <output
+          id="imc-info-value"
+          className={infoClass}
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {info}
+        </output>
+      </p>
+
+      <h3 id="table-title">Classificações:</h3>
 
       {/* Chama a grade que simula tabela */}
-      <div id="imc-table" role="table" aria-label="Tabela de classificação de IMC">
+      <div
+        id="imc-table"
+        role="table"
+        aria-labelledby="table-title"
+        aria-describedby="table-hint"
+      >
         <div className="table-header" role="row">
-          <h4 role="columnheader">IMC</h4>
-          <h4 role="columnheader">Classificação</h4>
-          <h4 role="columnheader">Obesidade</h4>
+          <div role="columnheader">IMC</div>
+          <div role="columnheader">Classificação</div>
+          <div role="columnheader">Obesidade</div>
         </div>
 
         {data.map(({ classification, info, obesity }) => (
@@ -35,8 +64,16 @@ const ImcTable = ({ data, imc, info, infoClass, resetCalc }) => {
         ))}
       </div>
 
-      <Button id="back-btn" text="voltar" action={resetCalc} />
-    </section>
+      {/* Dica lida por leitor de tela sobre a tabela */}
+      <p id="table-hint" style={{ position: "absolute", left: "-9999px" }}>
+        A tabela mostra faixas de IMC, a classificação correspondente e o grau
+        de obesidade.
+      </p>
+
+      <div role="group" aria-label="Ações">
+        <Button id="back-btn" text="voltar" action={resetCalc} />
+      </div>
+    </div>
   );
 };
 

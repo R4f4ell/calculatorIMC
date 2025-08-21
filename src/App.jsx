@@ -53,26 +53,52 @@ function App() {
   }, []);
 
   return (
-    <main role="main">
-      <Toaster position="top-right" reverseOrder={false} />
+    <>
+      <a
+        href="#conteudo-principal"
+        onFocus={(e) => {
+          e.currentTarget.style.position = "static";
+          e.currentTarget.style.left = "auto";
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.position = "absolute";
+          e.currentTarget.style.left = "-9999px";
+        }}
+        style={{ position: "absolute", left: "-9999px" }}
+      >
+        Pular para o conteúdo principal
+      </a>
 
-      <section className="container" aria-label="Calculadora de IMC">
-        {/* Chama o Suspense para suportar lazy import sem alterar a UX */}
-        <Suspense fallback={null}>
-          {!imc ? (
-            <ImcCalc calcImc={calcImc} />
-          ) : (
-            <ImcTable
-              data={data}
-              imc={imc}
-              info={info}
-              infoClass={infoClass}
-              resetCalc={resetCalc}
-            />
-          )}
-        </Suspense>
-      </section>
-    </main>
+      <main id="conteudo-principal" tabIndex={-1} aria-label="Conteúdo principal">
+        {/* Área viva para leitores de tela anunciarem os toasts */}
+        <div role="status" aria-live="polite" aria-atomic="true">
+          <Toaster position="top-right" reverseOrder={false} />
+        </div>
+
+        <section className="container" aria-label="Calculadora de IMC">
+          {/* Suspense com fallback acessível */}
+          <Suspense
+            fallback={
+              <div role="status" aria-live="polite" aria-atomic="true">
+                Carregando conteúdo…
+              </div>
+            }
+          >
+            {!imc ? (
+              <ImcCalc calcImc={calcImc} />
+            ) : (
+              <ImcTable
+                data={data}
+                imc={imc}
+                info={info}
+                infoClass={infoClass}
+                resetCalc={resetCalc}
+              />
+            )}
+          </Suspense>
+        </section>
+      </main>
+    </>
   );
 }
 
